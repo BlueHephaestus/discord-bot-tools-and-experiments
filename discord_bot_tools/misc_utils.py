@@ -199,7 +199,7 @@ def search_strings(query, strings):
 
     return search_results
 
-def regex_messages(client, regex_query, return_full_message=False):
+def regex_messages(client, regex_query, return_full_message=True, ignore_case=False):
     """
     Arguments:
         client: A discord.py Client Object
@@ -211,6 +211,9 @@ def regex_messages(client, regex_query, return_full_message=False):
                 It will do this out of all logfiles searched.
             If False, this function will only return a list of the strings which our regex matched,
                 out of all logfiles searched.
+        ignore_case:
+            If True, will ignore case.
+            If False, will not ignore case.
 
     Returns:
         Will go through all already existing logfiles under the client's username, 
@@ -247,7 +250,10 @@ def regex_messages(client, regex_query, return_full_message=False):
                 message = message.strip()
 
                 #Our results for just this message
-                message_results = re.findall(regex_query, message)
+                if ignore_case:
+                    message_results = re.findall(regex_query, message, re.IGNORECASE)
+                else:
+                    message_results = re.findall(regex_query, message)
 
                 #We have matches
                 if len(message_results) > 0:
@@ -324,9 +330,47 @@ def regex_messages(client, regex_query, return_full_message=False):
     #And with that, we're done.
     return results
 
+def regex_message(message, regex_query, return_full_message=True, ignore_case=False):
+    """
+    Arguments:
+        message: Message to check with our regex.
+        regex_query: A regex string to use with python's re library, so it should be a valid string with that library.
+            Example: regex_query = r"[^A-Z]"
+        return_full_message: 
+            If True, this function will return the entire message if it contained a match for our regex.
+            If False, this function will only return a list of the strings which our regex matched.
+        ignore_case:
+            If True, will ignore case.
+            If False, will not ignore case.
 
+    Returns:
+        Not to be confused with regex_messages, which works with all of our messages.
+        This looks at the given message to see if our regex finds a match in it.
+        If True,
+            If return_full_message=True, this function will return the entire message if it contained a match for our regex.
+            If return_full_message=False, this function will only return a list of the strings which our regex matched.
+        If False, returns False.
+    """
+    message = message.strip()
 
-def query_messages(client, query_str, return_full_message=False):
+    #Our results for just this message
+    if ignore_case:
+        message_results = re.findall(regex_query, message, re.IGNORECASE)
+    else:
+        message_results = re.findall(regex_query, message)
+
+    #We have matches
+    if len(message_results) > 0:
+        if return_full_message:
+            #return the full message
+            return message
+        else:
+            #return the matches
+            return message_results
+    else:
+        return False
+
+def query_messages(client, query_str, return_full_message=True, ignore_case=True):
     """
     Arguments:
         client: A discord.py Client Object
@@ -337,15 +381,41 @@ def query_messages(client, query_str, return_full_message=False):
                 It will do this out of all logfiles searched.
             If False, this function will only return a list of the strings which our query matched,
                 out of all logfiles searched.
+        ignore_case:
+            If True, will ignore case.
+            If False, will not ignore case.
 
     Returns:
         This function is literally one line to call regex_messages using our query_str to create a regex_query.
         So check the documentation there if you want to know how it works.
         We use \S*query_str\S* as our regex string, as it checks for any instances of our query string in another string, excluding bordering spaces.
     """
-    return regex_messages(client, r"\S*%s\S*"%(query_str), return_full_message=return_full_message)
+    return regex_messages(client, r"\S*%s\S*"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
 
 
+def query_message(message, query_str, return_full_message=True, ignore_case=True):
+    """
+    Arguments:
+        message: Message to check with our query.
+        query_str: A query string, we will use this to search through all logfiles for matches of this string.
+        return_full_message: 
+            If True, this function will return the entire message if it contained a match for our query.
+            If False, this function will only return a list of the strings which our query matched.
+        ignore_case:
+            If True, will ignore case.
+            If False, will not ignore case.
+
+    Returns:
+        Not to be confused with query_messages, which works with all of our messages.
+        This looks at the given message to see if our query finds a match in it.
+        If True,
+            If return_full_message=True, this function will return the entire message if it contained a match for our regex.
+            If return_full_message=False, this function will only return a list of the strings which our regex matched.
+        If False, returns False.
+
+        Literally calls regex_message.
+    """
+    return regex_message(message, r"\S*%s\S*"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
 
 
 
