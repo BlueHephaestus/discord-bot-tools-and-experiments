@@ -1,11 +1,15 @@
+"""
+Template for testing our tools.
+
+Makes use of our tools and other such code along with the rest of our files
+    to give the caller account behavior unique to this template.
+"""
 import discord
 import discord_bot_tools as dt
 import asyncio
 
 """
 Initialize an object for use later, we can have helpful attributes as a part of this class.
-
-We shouldn't need to pass in the name, it should use the given name by default and only change that if a name arg is passed in.
 """
 
 def main(token, is_bot=True):
@@ -64,17 +68,17 @@ def main(token, is_bot=True):
         #await dt.log_private_messages((client, ["darkelement"]))
 
         #Regex all logfiles for a regex query and return all results found as list of messages - not asynchronous - tested
-        #res = dt.regex_messages(client, r"<TAG\b[^>]*>(.*?)</TAG>", return_full_message=False)
-
+        #res = dt.regex_messages(client, r"\t", return_full_message=False)
 
         #Search for matches of a given string, and return all results found as list of messages. Actually is a one-liner to call regex_messages with a nice regex so it takes the same arguments. - not asynchronous - tested
         #res = dt.query_messages(client, "asdf", return_full_message=False)
 
         #Since our profile never exits, we have this here so we know when we can force shut it off.
-        print("Completed Execution.")
+        #print("Completed Execution.")
 
     @client.event
     async def on_message(msg):
+        
         print(dt.get_global_msg_str(msg))
 
     """
