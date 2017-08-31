@@ -1,12 +1,11 @@
 import discord_bot_tools as dt
 import datetime, os, asyncio
 
-async def log_all_messages(args):
+async def log_all_messages(client):
     """
     Arguments:
         client: A discord.py Client Object
     """
-    client = args
     print("Logging All Messages for %s..." % client.user.name)
 
     """
@@ -19,31 +18,29 @@ async def log_all_messages(args):
         
     print("Completed Logging All Messages for %s." % client.user.name)
 
-async def log_all_server_messages(args):
+async def log_all_server_messages(client):
     """
     Arguments:
         client: A discord.py Client Object
     """
-    client = args
     print("Logging All Server Messages for %s from %i Servers..." % (client.user.name, len([server for server in client.servers])))
 
-    await log_channel_messages((client, client.get_all_channels()))
+    await log_channel_messages(client, client.get_all_channels())
 
     print("Completed Logging All Server Messages for %s." % client.user.name)
 
-async def log_all_private_messages(args):
+async def log_all_private_messages(client):
     """
     Arguments:
         client: A discord.py Client Object
     """
-    client = args
     print("Logging All Private Messages for %s from %i Private Channels..." % (client.user.name, len([private_channel for private_channel in client.private_channels])))
 
-    await log_private_messages((client, client.private_channels))
+    await log_private_messages(client, client.private_channels)
 
     print("Completed Logging All Private Messages for %s." % client.user.name)
 
-async def log_server_messages(args):
+async def log_server_messages(client, server):
     """
     Arguments:
         client: A discord.py Client Object
@@ -54,25 +51,24 @@ async def log_server_messages(args):
         Will call the appropriate function depending on if each server is a string or discord.py Server object.
         Will overwrite existing logs for this server, if it is found, using the usual message format. 
     """
-    client, server_iterable = args
     servers = [server for server in server_iterable]
     for server in servers:
         if isinstance(server, str):
             print("Logging Server Messages from %s for %s." % (server, client.user.name))
-            await log_server_str_messages((client, server))
+            await log_server_str_messages(client, server)
             print("Completed Logging Server Messages from %s for %s." % (server, client.user.name))
         else:
             print("Logging Server Messages from %s for %s." % (server.name, client.user.name))
-            await log_server_obj_messages((client, server))
+            await log_server_obj_messages(client, server)
             print("Completed Logging Server Messages from %s for %s." % (server.name, client.user.name))
 
 
-async def log_server_obj_messages(args):
+async def log_server_obj_messages(client, server):
     """
     Arguments:
         client: A discord.py Client Object
         server: A server OBJECT, from discord.py. 
-        Do not confuse with log_server_str_messages, as this only works when the server is an object.
+            Do not confuse with log_server_str_messages, as this only works when the server is an object.
 
     Returns:
         All messages from the server object, including all channels of the server.
@@ -82,15 +78,14 @@ async def log_server_obj_messages(args):
             the name given, and use that. However, this function has the cost of it not being
             obvious what the server is when printing it, since it is a discord object
     """
-    client, server = args
-    await log_channel_messages((client, server.channels))
+    await log_channel_messages(client, server.channels)
 
-async def log_server_str_messages(args):
+async def log_server_str_messages(client, server_str):
     """
     Arguments:
         client: A discord.py Client Object
         server: A server STRING.
-        Do not confuse with log_server_obj_messages, as this only works when the server is a string.
+            Do not confuse with log_server_obj_messages, as this only works when the server is a string.
 
     Returns:
         Searches for servers matching the string passed in, and uses the first result if found.
@@ -99,7 +94,6 @@ async def log_server_str_messages(args):
         This is very useful when you don't want to use an object, however you know the name
             and it's hopefully a unique name. While not as specific as the object, it is easier to use.
     """
-    client, server_str = args
 
     """
     We already have our query, just need our strings to search through.
@@ -118,9 +112,9 @@ async def log_server_str_messages(args):
         server_obj = servers[first_search_result_i]
 
         #Then log messages from this object
-        await log_server_obj_messages((client, server_obj))
+        await log_server_obj_messages(client, server_obj)
 
-async def log_channel_messages(args):
+async def log_channel_messages(client, channel_iterable):
     """
     Arguments:
         client: A discord.py Client Object
@@ -133,15 +127,14 @@ async def log_channel_messages(args):
                 If object -> log_channel_obj_messages()
             Will overwrite existing logs for all channels, if they are found, using the usual message format. 
     """
-    client, channel_iterable = args
     channels = [channel for channel in channel_iterable]
     for channel in channels:
         if isinstance(channel, str):
-            await log_channel_str_messages((client, channel))
+            await log_channel_str_messages(client, channel)
         else:
-            await log_channel_obj_messages((client, channel))
+            await log_channel_obj_messages(client, channel)
 
-async def log_channel_obj_messages(args):
+async def log_channel_obj_messages(client, channel):
     """
     Arguments:
         client: A discord.py Client Object
@@ -151,7 +144,6 @@ async def log_channel_obj_messages(args):
         Logs messages from channel using the usual format.
         Will use server attribute to determine the server directory.
     """
-    client, channel = args
     log_fname = channel.name + ".log"
     log_fpath = dt.get_valid_filename(client.user.name) + os.sep + "Servers" + os.sep + dt.get_valid_filename(channel.server.name) + os.sep + dt.get_valid_filename(log_fname)
 
@@ -166,12 +158,12 @@ async def log_channel_obj_messages(args):
         for msg in log:
             f.write(dt.get_msg_str(msg))
 
-async def log_channel_str_messages(args):
+async def log_channel_str_messages(client, channel_str):
     """
     Arguments:
         client: A discord.py Client Object
         channel_str: A channel STRING.
-        Do not confuse with log_channel_obj_messages, as this only works when the channel is a string.
+            Do not confuse with log_channel_obj_messages, as this only works when the channel is a string.
 
     Returns:
         Searches for channels matching the string passed in, and uses the first result if found.
@@ -180,7 +172,6 @@ async def log_channel_str_messages(args):
         This is very useful when you don't want to use an object, however you know the name
             and it's hopefully a unique name. While not as specific as the object, it is easier to use.
     """
-    client, channel_str = args
 
     """
     We already have our query, just need our strings to search through.
@@ -199,9 +190,9 @@ async def log_channel_str_messages(args):
         channel_obj = channels[first_search_result_i]
 
         #Then log messages from this object
-        await log_channel_obj_messages((client, channel_obj))
+        await log_channel_obj_messages(client, channel_obj)
 
-async def log_private_messages(args):
+async def log_private_messages(client, private_channel_iterable):
     """
     Arguments:
         client: A discord.py Client Object
@@ -214,15 +205,14 @@ async def log_private_messages(args):
                 If object -> log_channel_obj_messages()
             Will overwrite existing logs for all channels, if they are found, using the usual message format. 
     """
-    client, private_channel_iterable = args
     private_channels = [private_channel for private_channel in private_channel_iterable]
     for private_channel in private_channels:
         if isinstance(private_channel, str):
-            await log_str_private_messages((client, private_channel))
+            await log_str_private_messages(client, private_channel)
         else:
-            await log_obj_private_messages((client, private_channel))
+            await log_obj_private_messages(client, private_channel)
 
-async def log_obj_private_messages(args):
+async def log_obj_private_messages(client, private_channel):
     """
     Arguments:
         client: A discord.py Client Object
@@ -232,7 +222,6 @@ async def log_obj_private_messages(args):
         Logs messages from PrivateChannel object using the usual format.
         Will use their recipient count to determine if it is a group private message or not.
     """
-    client, private_channel = args
     if len(private_channel.recipients) == 1:
         #One user message
         log_fname = private_channel.user.name + ".log"
@@ -253,7 +242,7 @@ async def log_obj_private_messages(args):
         for msg in log:
             f.write(dt.get_msg_str(msg))
 
-async def log_str_private_messages(args):
+async def log_str_private_messages(client, private_channel_str):
     """
     Arguments:
         client: A discord.py Client Object
@@ -269,7 +258,6 @@ async def log_str_private_messages(args):
         When searching, will use only the name of the users. If it is a group message, it will not use a given name - instead using the users in the group message.
             If you have multiple group messages with the same users, then I suggest using that object or simply logging all private messages instead.
     """
-    client, private_channel_str = args
 
     """
     We already have our query, just need our strings to search through.
@@ -300,4 +288,4 @@ async def log_str_private_messages(args):
         private_channel_obj = private_channels[first_search_result_i]
 
         #Then log messages from this object
-        await log_obj_private_messages((client, private_channel_obj))
+        await log_obj_private_messages(client, private_channel_obj)
