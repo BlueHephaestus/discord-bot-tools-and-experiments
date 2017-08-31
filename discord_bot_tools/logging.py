@@ -40,7 +40,7 @@ async def log_all_private_messages(client):
 
     print("Completed Logging All Private Messages for %s." % client.user.name)
 
-async def log_server_messages(client, server):
+async def log_server_messages(client, server_iterable):
     """
     Arguments:
         client: A discord.py Client Object
@@ -84,7 +84,7 @@ async def log_server_str_messages(client, server_str):
     """
     Arguments:
         client: A discord.py Client Object
-        server: A server STRING.
+        server_str: A server STRING.
             Do not confuse with log_server_obj_messages, as this only works when the server is a string.
 
     Returns:
