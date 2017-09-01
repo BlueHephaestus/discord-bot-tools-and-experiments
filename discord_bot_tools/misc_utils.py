@@ -1,5 +1,4 @@
-import os
-import re
+import os, re, csv
 
 def ensure_dir(directory):
     if not os.path.exists(directory):
@@ -417,6 +416,77 @@ def query_message(message, query_str, return_full_message=True, ignore_case=True
     """
     return regex_message(message, r"\S*%s\S*"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
 
+async def start_server_metadata_daemon(client):
+    """
+    Arguments:
+        client: A discord.py Client Object
+
+    Returns:
+        This function is appropriately named, as it starts our server metadata daemon. As such,
+        this function is responsible for that daemon.
+
+        Our daemon will go through each server (in alphabetical order), and create a row of the format
+
+            Server Name - Member # - Members Online % - Members Offline % - Members in Voice # - Invite URL
+
+        With our columns separated by "-"s
+
+        It will do this for every server our client is connected to, creating a .csv file 
+            with each row being a different server, and formatted as above. 
+
+        It will update this .csv file (if not already created) every 5 seconds. 
+
+        CURRENTLY UNFINISHED
+    """
+    #Infinite loop to run daemon forever
+    while True:
+        #Get servers
+        servers = list(client.servers)
+        for server in servers:
+            #Get metadata
+            #Server name
+            server_name = server.name
+
+            #Members of this server
+            members = list(server.members)
+
+            #Member #
+            member_n = len(members)
+
+            """
+            Now we get member-specific info,
+                starting by finding the number of users 
+                which are online, offline, and in a voice channel.
+
+            If a user is not online, it is counted as being offline.
+            """
+            member_online_n = 0
+            member_offline_n = 0
+            member_voice_n = 0
+            for member in members:
+                if member.status.online:
+                    member_online_n+=1
+                else:
+                    member.offline_n+=1
+
+                if member.voice_channel:
+                    member_voice_n+=1
+            #Get percentages from this data with 2 decimal places
+            member_online_perc = round(float(member_online_n)/member_n, 2)
+            member_offline_perc = round(float(member_offline_n)/member_n, 2)
+
+            #Get the associated invite url which we used to join this server.
+            #invite_url = 
+
+            #server_metadata = [server.name, len(list(server.members)), 
+            """
+            with open("test.csv", 'wb') as myfile:
+                wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+                wr.writerow(l1)
+                wr.writerow(l2)
+
+                    asyncio.sleep(5)
+            """
 
 
 
