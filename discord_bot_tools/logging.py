@@ -18,6 +18,34 @@ async def log_all_messages(client):
         
     print("Completed Logging All Messages for %s." % client.user.name)
 
+async def all_messages(client):
+    """
+    Arguments:
+        client: A discord.py Client Object
+
+    Returns:
+        Exactly like our log_all_messages function, except this function is a generator.
+        It loops through all messages belonging to the client object, be them in
+            private channels, private group messages, servers, or whatever.
+        
+        I could write a version of these for every single other log_ function,
+            but I really don't want to yet.
+    """
+    #Get our two lists
+    channels = [channel for channel in client.get_all_channels()]
+    private_channels = [private_channel for private_channel in client.private_channels]
+
+    #Get all our messages as one list
+    channels.extend(private_channels)
+
+    #Loop through all channels and messages
+    for channel in channels:
+        try:
+            async for msg in client.logs_from(channel, limit=100100100100):
+                yield msg
+        except:
+            pass
+
 async def log_all_server_messages(client):
     """
     Arguments:
@@ -289,3 +317,4 @@ async def log_str_private_messages(client, private_channel_str):
 
         #Then log messages from this object
         await log_obj_private_messages(client, private_channel_obj)
+
