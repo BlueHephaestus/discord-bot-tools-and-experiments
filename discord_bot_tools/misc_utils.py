@@ -389,7 +389,7 @@ def query_messages(client, query_str, return_full_message=True, ignore_case=True
         So check the documentation there if you want to know how it works.
         We use \S*query_str\S* as our regex string, as it checks for any instances of our query string in another string, excluding bordering spaces.
     """
-    return regex_messages(client, r"\S*%s\S*"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
+    return regex_messages(client, r"[^A-Za-z0-9]%s[^A-Za-z0-9]"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
 
 
 def query_message(message, query_str, return_full_message=True, ignore_case=True):
@@ -414,7 +414,7 @@ def query_message(message, query_str, return_full_message=True, ignore_case=True
 
         Literally calls regex_message.
     """
-    return regex_message(message, r"\S*%s\S*"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
+    return regex_message(message, r"[^A-Za-z0-9]%s[^A-Za-z0-9]"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
 
 async def start_server_metadata_daemon(client):
     """
