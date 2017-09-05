@@ -389,7 +389,7 @@ def query_messages(client, query_str, return_full_message=True, ignore_case=True
         So check the documentation there if you want to know how it works.
         We use \S*query_str\S* as our regex string, as it checks for any instances of our query string in another string, excluding bordering spaces.
     """
-    return regex_messages(client, r"[^A-Za-z0-9]%s[^A-Za-z0-9]"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
+    return regex_messages(client, r"\S*\b%s\b\S*"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
 
 
 def query_message(message, query_str, return_full_message=True, ignore_case=True):
@@ -414,7 +414,28 @@ def query_message(message, query_str, return_full_message=True, ignore_case=True
 
         Literally calls regex_message.
     """
-    return regex_message(message, r"[^A-Za-z0-9]%s[^A-Za-z0-9]"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
+    return regex_message(message, r"\S*\b%s\b\S*"%(query_str), return_full_message=return_full_message, ignore_case=ignore_case)
+
+def multiquery_message(message, query_strs, return_full_message=True, ignore_case=True):
+    """
+    Arguments:
+        message: Message to check with our query.
+        query_strs: A list of query strings, we will use this to search through all logfiles for matches of this string.
+        return_full_message: 
+            If True, this function will return the entire message if it contained a match for our query.
+            If False, this function will only return a list of the strings which our query matched.
+        ignore_case:
+            If True, will ignore case.
+            If False, will not ignore case.
+
+    Returns:
+        Loops through all our query_strs, calling our query_message function using the arguments passed in. 
+        Will return a list of the return values from each call.
+    """
+    retvals = []
+    for query_str in query_strs:
+        retvals.append(query_message(message, query_str, return_full_message=return_full_message, ignore_case=ignore_case))
+    return retvals
 
 async def start_server_metadata_daemon(client):
     """
