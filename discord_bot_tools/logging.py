@@ -5,6 +5,9 @@ async def log_all_messages(client):
     """
     Arguments:
         client: A discord.py Client Object
+
+    Returns:
+        Logs messages from all private channels, servers, everything it can see.
     """
     print("Logging All Messages for %s..." % client.user.name)
 
@@ -50,6 +53,9 @@ async def log_all_server_messages(client):
     """
     Arguments:
         client: A discord.py Client Object
+
+    Returns:
+        Logs messages from all servers and channels in these servers.
     """
     print("Logging All Server Messages for %s from %i Servers..." % (client.user.name, len([server for server in client.servers])))
 
@@ -61,6 +67,9 @@ async def log_all_private_messages(client):
     """
     Arguments:
         client: A discord.py Client Object
+
+    Returns:
+        Logs messages from all private messages and private group messages.
     """
     print("Logging All Private Messages for %s from %i Private Channels..." % (client.user.name, len([private_channel for private_channel in client.private_channels])))
 
