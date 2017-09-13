@@ -13,9 +13,9 @@ Below is the detailed documentation for every single function available in disco
 
 #### logging.py - log_all_messages(client):
 
-**Arguments:
+**Arguments:**
 
-client: A discord.py Client Object
+* client: A discord.py Client Object
 
 **Returns:
 
