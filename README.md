@@ -44,7 +44,7 @@ Below is the detailed documentation for functions available in `discord_bot_tool
 ## logging.py - All functions included
 
 ### log_all_messages(client)
-------------
+------
 
 **Arguments:**
 
