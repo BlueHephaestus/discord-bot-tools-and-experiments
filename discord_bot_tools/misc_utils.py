@@ -159,7 +159,7 @@ def search_strings(query, strings):
         Does the following process:
         1. Converts query and all strings in list to lowercase, 
         2. Substitutes all non-alphanumeric characters for spaces (only in the strings),
-        2. Divides query and all strings into list of words by splitting on space
+        3. Divides query and all strings into list of words by splitting on space
         4. For every string list in our strings list, 
             check how many words match the words in our query and store both the integer "score" of that string, 
             and the index of our original string in a new list, with the format [score, index].
