@@ -1,4 +1,6 @@
-import tool_testing
+import template_tool_testing
+import template_ghost_bot
+
 from threading import Thread
 
 """
@@ -8,7 +10,7 @@ Each value in the bots dict is like so:
     client: Function to call to initialize our bot's client and execute its code
 """
 bots = {
-            "DarkElement":("token", False, tool_testing.main),
+            "DarkElement":("token", False, template_tool_testing.main)
        }
 
 for bot in bots.keys():
