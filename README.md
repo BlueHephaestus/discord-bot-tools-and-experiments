@@ -11,13 +11,13 @@
 Below is the detailed documentation for every single function available in discord_bot_tools/ ,
   in the format <filename> - <function> :
 
-#### logging.py - log_all_messages(client):
+### logging.py - log_all_messages(client):
 
-Arguments:
+**Arguments:**
 
-* client: A discord.py Client Object
+* **client**: A discord.py Client Object
 
-Returns:
+**Returns:**
 
 Logs messages from all private channels, servers, everything it can see.
 
