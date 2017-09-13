@@ -24,7 +24,7 @@
 
 **Python 3.6**
 
-**Python Libraries**
+**Python Libraries**:
 
 * discord
 * threading
@@ -43,7 +43,7 @@ Below is the detailed documentation for functions available in `discord_bot_tool
 
 ## logging.py - All functions included
 
-###log_all_messages(client)
+### log_all_messages(client)
 
 **Arguments:**
 
@@ -54,18 +54,17 @@ Below is the detailed documentation for functions available in `discord_bot_tool
 Logs messages from all private channels, servers, everything it can see.
 
 
-async def all_messages(client):
-    """
-    Arguments:
-        client: A discord.py Client Object
+### all_messages(client):
 
-    Returns:
-        Exactly like our log_all_messages function, except this function is a generator.
-        It loops through all messages belonging to the client object, be them in
-            private channels, private group messages, servers, or whatever.
-        
-        I could write a version of these for every single other log_ function,
-            but I really don't want to yet.
+**Arguments:**
+
+* **client**: A discord.py Client Object
+
+**Returns:**
+
+Exactly like our log_all_messages function, except this function is a generator.  It loops through all messages belonging to the client object, be them in private channels, private group messages, servers, or whatever.  
+
+I could write a version of these for every single other log_ function, but I really don't want to yet.
 
 
 async def log_all_server_messages(client):
