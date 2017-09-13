@@ -44,7 +44,7 @@ Below is the detailed documentation for functions available in `discord_bot_tool
 ## logging.py - All functions included
 
 ### log_all_messages(client)
-------
+======
 
 **Arguments:**
 
@@ -56,7 +56,7 @@ Logs messages from all private channels, servers, everything it can see.
 
 
 ### all_messages(client):
----
+
 
 **Arguments:**
 
