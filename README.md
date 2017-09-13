@@ -9,7 +9,7 @@
 # Documentation
 
 Below is the detailed documentation for every single function available in discord_bot_tools/ ,
-  in the format <filename> - <function> :
+  in the format `<filename> - <function>` :
 
 ### logging.py - log_all_messages(client):
 
