@@ -1,4 +1,4 @@
-import os, re, csv
+import os, re
 
 def ensure_dir(directory):
     if not os.path.exists(directory):
@@ -24,6 +24,7 @@ def get_msg_str(msg):
     """
     Arguments:
         msg: Discord.py Message object
+
     Returns:
         Gets a string formatted like
             date-author-content
@@ -37,6 +38,7 @@ def get_global_msg_str(msg):
     """
     Arguments:
         msg: Discord.py Message object
+
     Returns:
         Gets a string formatted like
             server(will not be included if private message)-channel(or private message if not a channel)-date-author-content
