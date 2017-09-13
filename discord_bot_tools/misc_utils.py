@@ -88,21 +88,25 @@ def recursive_get_paths(directory):
 
 def ensure_necessary_log_dirs(client):
     """
-    Given a discord.py Client object, ensures that all directories are created for logging from any private message, channel, server, and so on.
-    Will format as:
-    <user>/
-        servers/
-            <server1>/
-                <channel logfile>
+    Arguments:
+        client: A discord.py Client Object
+
+    Returns:
+        Given a discord.py Client object, ensures that all directories are created for logging from any private message, channel, server, and so on.
+        Will format as:
+        <user>/
+            servers/
+                <server1>/
+                    <channel logfile>
+                    ...
                 ...
-            ...
-        private messages/
-            <logfile>
-            ...
-        private group messages/
-            <logfile>
-            ...
-    """
+            private messages/
+                <logfile>
+                ...
+            private group messages/
+                <logfile>
+                ...
+        """
     servers = [server for server in client.servers]
     channels = [channel for channel in client.get_all_channels()]
     private_channels = [private_channel for private_channel in client.private_channels]
