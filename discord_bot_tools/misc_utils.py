@@ -413,10 +413,10 @@ def query_message(message, query_str, return_full_message=True, ignore_case=True
     Returns:
         Not to be confused with query_messages, which works with all of our messages.
         This looks at the given message to see if our query finds a match in it.
-        If True,
+        If it does find a match,
             If return_full_message=True, this function will return the entire message if it contained a match for our regex.
             If return_full_message=False, this function will only return a list of the strings which our regex matched.
-        If False, returns False.
+        If it doesn't find a match, returns False.
 
         Literally calls regex_message.
     """
