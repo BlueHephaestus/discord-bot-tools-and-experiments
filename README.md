@@ -1,5 +1,7 @@
 # Description 
 
+I'm working on this README whenever I have time, but its been a busy week X_X
+
 # Installation
 
 1. Download/Clone this repository
