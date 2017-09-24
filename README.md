@@ -1,6 +1,10 @@
 # Description 
 
-I'm working on this README whenever I have time, but its been a busy week X_X
+This repository's main function is to provide a high-level interface for creating multifunctional discord bots in Python 3.6. When I started wanting to make discord bots, I was very pleased to find the awesome and comprehensive library of [discord.py](http://discordpy.readthedocs.io/en/latest/api.html). While I applaud the guys over there and love the library, I wanted some higher-level functions, like logging messages from all connected channels for instance. So I started making some tools and functions which wrapped around discord.py to provide a higher-level interface I could use, and eventually figured it may be useful to others as well. And so, this repository was born, with the hope that others may also find this code extremely useful. In this repository, you'll find code and functions focusing on logging messages from servers and private channels, searching for messages, regexing messages, and many more. I highly recommend reading the documentation, however you can find some simple examples of really cool functions I've made in the provided `template_tool_testing.py` file, as detailed in the installation instructions.
+
+That's pretty much it. Good luck, have fun!
+
+-Blake Edwards / Dark Element
 
 # Installation
 
@@ -15,7 +19,7 @@ I'm working on this README whenever I have time, but its been a busy week X_X
 
 5. Change any of the arguments as you wish for this bot / account, using the below documentation.
 
-6. Add whatever functions you want to the main section of template_tool_testing.py, for the functions of this bot.
+6. Add whatever functions you want to the main section of `template_tool_testing.py`, for the functions of this bot.
 
 7. Feel free to add other bots to run asynchronously alongside each other in the bots dictionary, 
   using different templates if you wish for them to have different functions. Again, I encourage reading the documentation.
