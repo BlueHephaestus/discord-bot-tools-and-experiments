@@ -166,6 +166,7 @@ async def log_channel_messages(client, channel_iterable):
     """
     channels = [channel for channel in channel_iterable]
     for channel in channels:
+        #print("DEBUG: Logging Channel messages from {}".format(channel))
         if isinstance(channel, str):
             await log_channel_str_messages(client, channel)
         else:
@@ -180,20 +181,22 @@ async def log_channel_obj_messages(client, channel):
     Returns:
         Logs messages from channel using the usual format.
         Will use server attribute to determine the server directory.
+
+        NOTE: NO LONGER SORTS, as this involved holding all messages for a channel in ram.
+            Since channels can have millions of messages, this became infeasible.
+            
     """
     log_fname = channel.name + ".log"
     log_fpath = dt.get_valid_filename(client.user.name) + os.sep + "Servers" + os.sep + dt.get_valid_filename(channel.server.name) + os.sep + dt.get_valid_filename(log_fname)
 
+    #print("DEBUG: Channel Object")
     with open(log_fpath, "w") as f:
-        log = []
         try:
             async for msg in client.logs_from(channel, limit=100100100100):
-                log.append(msg)
+                print("DEBUG: Message: {}".format(dt.get_global_msg_str(msg).strip()))
+                f.write(dt.get_msg_str(msg))
         except:
             pass
-        log = dt.sort_log(log)
-        for msg in log:
-            f.write(dt.get_msg_str(msg))
 
 async def log_channel_str_messages(client, channel_str):
     """
@@ -220,6 +223,7 @@ async def log_channel_str_messages(client, channel_str):
     #idxs is plural of i because otherwise we would be saying "is"
     search_result_idxs = dt.search_strings(channel_str, channel_names)
 
+    #print("DEBUG: Channel String")
     #If we have results
     if len(search_result_idxs) > 0:
         #Get first result and reference our channel object with it.
