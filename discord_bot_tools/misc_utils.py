@@ -1,5 +1,9 @@
 import os, re
 
+def ensure_file(fname):
+    if not os.path.exists(fname):
+        open(fname, "w").close()
+
 def ensure_dir(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -88,21 +92,25 @@ def recursive_get_paths(directory):
 
 def ensure_necessary_log_dirs(client):
     """
-    Given a discord.py Client object, ensures that all directories are created for logging from any private message, channel, server, and so on.
-    Will format as:
-    <user>/
-        servers/
-            <server1>/
-                <channel logfile>
+    Arguments:
+        client: A discord.py Client Object
+
+    Returns:
+        Given a discord.py Client object, ensures that all directories are created for logging from any private message, channel, server, and so on.
+        Will format as:
+        <user>/
+            servers/
+                <server1>/
+                    <channel logfile>
+                    ...
                 ...
-            ...
-        private messages/
-            <logfile>
-            ...
-        private group messages/
-            <logfile>
-            ...
-    """
+            private messages/
+                <logfile>
+                ...
+            private group messages/
+                <logfile>
+                ...
+        """
     servers = [server for server in client.servers]
     channels = [channel for channel in client.get_all_channels()]
     private_channels = [private_channel for private_channel in client.private_channels]
@@ -159,7 +167,7 @@ def search_strings(query, strings):
         Does the following process:
         1. Converts query and all strings in list to lowercase, 
         2. Substitutes all non-alphanumeric characters for spaces (only in the strings),
-        2. Divides query and all strings into list of words by splitting on space
+        3. Divides query and all strings into list of words by splitting on space
         4. For every string list in our strings list, 
             check how many words match the words in our query and store both the integer "score" of that string, 
             and the index of our original string in a new list, with the format [score, index].
@@ -347,10 +355,10 @@ def regex_message(message, regex_query, return_full_message=True, ignore_case=Fa
     Returns:
         Not to be confused with regex_messages, which works with all of our messages.
         This looks at the given message to see if our regex finds a match in it.
-        If True,
+        If it does find a match,
             If return_full_message=True, this function will return the entire message if it contained a match for our regex.
             If return_full_message=False, this function will only return a list of the strings which our regex matched.
-        If False, returns False.
+        If it doesn't find a match, returns False.
     """
     message = message.strip()
 
@@ -409,10 +417,10 @@ def query_message(message, query_str, return_full_message=True, ignore_case=True
     Returns:
         Not to be confused with query_messages, which works with all of our messages.
         This looks at the given message to see if our query finds a match in it.
-        If True,
+        If it does find a match,
             If return_full_message=True, this function will return the entire message if it contained a match for our regex.
             If return_full_message=False, this function will only return a list of the strings which our regex matched.
-        If False, returns False.
+        If it doesn't find a match, returns False.
 
         Literally calls regex_message.
     """
