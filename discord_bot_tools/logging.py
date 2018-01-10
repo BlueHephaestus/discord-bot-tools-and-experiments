@@ -193,7 +193,7 @@ async def log_channel_obj_messages(client, channel):
     with open(log_fpath, "w") as f:
         try:
             async for msg in client.logs_from(channel, limit=100100100100):
-                print("DEBUG: Message: {}".format(dt.get_global_msg_str(msg).strip()))
+                #print("DEBUG: Message: {}".format(dt.get_global_msg_str(msg).strip()))
                 f.write(dt.get_msg_str(msg))
         except:
             pass
