@@ -38,7 +38,7 @@ def main(token, is_bot=True):
 
     @client.event
     async def on_message(msg):
-        handle_message(msg)
+        await handle_message(msg)
         
 
     async def handle_message(msg):
